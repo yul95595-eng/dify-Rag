@@ -1,0 +1,407 @@
+{
+  "meta": {
+    "project": "企业智能问答与工单分类助手（RAG 原型）",
+    "description": "测试问题集，用于评估 Dify 工作流的分类准确率与回答质量。所有问题均为示例场景，不指向任何真实企业。",
+    "version": "1.0",
+    "categories": ["人事", "行政", "财务", "IT", "后勤", "其他"],
+    "total_questions": 65,
+    "field_spec": {
+      "question": "用户可能提出的自然语言问题",
+      "expected_category": "期望的分类结果，只能取 人事/行政/财务/IT/后勤/其他",
+      "expected_keywords": "回答中应当出现的关键词，用于评估回答相关性",
+      "topic": "问题所属业务主题，便于分组统计"
+    }
+  },
+  "questions": [
+    {
+      "question": "年假怎么申请？需要提前几天提交？",
+      "expected_category": "人事",
+      "expected_keywords": ["年假", "申请", "审批", "提前"],
+      "topic": "请假-年假"
+    },
+    {
+      "question": "我工作满6年了，今年有几天年假？",
+      "expected_category": "人事",
+      "expected_keywords": ["年假", "5天", "工作年限"],
+      "topic": "请假-年假"
+    },
+    {
+      "question": "年假当年没休完可以留到明年吗？",
+      "expected_category": "人事",
+      "expected_keywords": ["年假", "跨", "年度", "同意"],
+      "topic": "请假-年假结转"
+    },
+    {
+      "question": "应休未休的年假公司怎么补偿？",
+      "expected_category": "人事",
+      "expected_keywords": ["年假", "300%", "工资"],
+      "topic": "请假-年假补偿"
+    },
+    {
+      "question": "请事假会不会扣工资？扣多少？",
+      "expected_category": "人事",
+      "expected_keywords": ["事假", "无薪", "扣", "21.75"],
+      "topic": "请假-事假"
+    },
+    {
+      "question": "请事假5天需要谁审批？",
+      "expected_category": "人事",
+      "expected_keywords": ["事假", "审批", "部门负责人"],
+      "topic": "请假-事假审批"
+    },
+    {
+      "question": "生病想请病假，需要提供什么证明材料？",
+      "expected_category": "人事",
+      "expected_keywords": ["病假", "医院", "诊断证明"],
+      "topic": "请假-病假"
+    },
+    {
+      "question": "病假期间工资怎么发？",
+      "expected_category": "人事",
+      "expected_keywords": ["病假", "工资", "比例", "最低工资"],
+      "topic": "请假-病假工资"
+    },
+    {
+      "question": "结婚有几天婚假？需要上传什么材料？",
+      "expected_category": "人事",
+      "expected_keywords": ["婚假", "结婚证", "3天"],
+      "topic": "请假-婚假"
+    },
+    {
+      "question": "产假一共多少天？难产会增加吗？",
+      "expected_category": "人事",
+      "expected_keywords": ["产假", "98天", "难产"],
+      "topic": "请假-产假"
+    },
+    {
+      "question": "男员工有陪产假吗？多少天？",
+      "expected_category": "人事",
+      "expected_keywords": ["陪产假", "天", "出生"],
+      "topic": "请假-陪产假"
+    },
+    {
+      "question": "休假回来后需要办理销假手续吗？怎么办理？",
+      "expected_category": "人事",
+      "expected_keywords": ["销假", "返岗", "手续"],
+      "topic": "请假-销假"
+    },
+    {
+      "question": "请假没批就自己休假会怎么算？",
+      "expected_category": "人事",
+      "expected_keywords": ["旷工", "未获批准", "处理"],
+      "topic": "请假-旷工"
+    },
+    {
+      "question": "新员工入职第一天需要带哪些材料？",
+      "expected_category": "人事",
+      "expected_keywords": ["身份证", "离职证明", "学历"],
+      "topic": "入职"
+    },
+    {
+      "question": "入职流程大概是什么样的？当天有哪些安排？",
+      "expected_category": "人事",
+      "expected_keywords": ["入职", "劳动合同", "账号", "培训"],
+      "topic": "入职"
+    },
+    {
+      "question": "试用期多长？转正需要自己提交申请吗？",
+      "expected_category": "人事",
+      "expected_keywords": ["试用期", "转正", "考核"],
+      "topic": "试用期转正"
+    },
+    {
+      "question": "我要辞职，需要提前多久提出申请？",
+      "expected_category": "人事",
+      "expected_keywords": ["离职", "30日", "书面"],
+      "topic": "离职"
+    },
+    {
+      "question": "离职交接需要办理哪些手续？",
+      "expected_category": "人事",
+      "expected_keywords": ["交接", "资产归还", "账号注销", "财务"],
+      "topic": "离职交接"
+    },
+    {
+      "question": "离职证明和最后一个月工资什么时候能拿到？",
+      "expected_category": "人事",
+      "expected_keywords": ["离职证明", "手续", "结算", "次月"],
+      "topic": "离职结算"
+    },
+    {
+      "question": "出差的住宿费报销标准是多少？超标了能报吗？",
+      "expected_category": "财务",
+      "expected_keywords": ["住宿", "限额", "超标", "批准"],
+      "topic": "报销-差旅"
+    },
+    {
+      "question": "出差回来后多久之内必须完成差旅报销？",
+      "expected_category": "财务",
+      "expected_keywords": ["差旅", "报销", "10日", "时限"],
+      "topic": "报销-差旅时限"
+    },
+    {
+      "question": "报销用的发票有什么要求？普票和专票怎么选？",
+      "expected_category": "财务",
+      "expected_keywords": ["发票", "抬头", "专用发票", "普通发票"],
+      "topic": "报销-发票"
+    },
+    {
+      "question": "电子发票怎么提交才不会重复报销？",
+      "expected_category": "财务",
+      "expected_keywords": ["电子发票", "查重", "发票号码", "原件"],
+      "topic": "报销-电子发票"
+    },
+    {
+      "question": "发票不小心丢了还能报销吗？",
+      "expected_category": "财务",
+      "expected_keywords": ["发票", "补开", "审批", "报销"],
+      "topic": "报销-发票丢失"
+    },
+    {
+      "question": "报销单提交后多久能到账？",
+      "expected_category": "财务",
+      "expected_keywords": ["报销", "打款", "工作日", "审批"],
+      "topic": "报销-打款周期"
+    },
+    {
+      "question": "报销金额超过一万元需要谁审批？",
+      "expected_category": "财务",
+      "expected_keywords": ["审批", "金额", "总经理", "分级"],
+      "topic": "报销-审批权限"
+    },
+    {
+      "question": "出差的餐补和市内交通补贴怎么算？",
+      "expected_category": "财务",
+      "expected_keywords": ["伙食补助", "市内交通", "包干", "天"],
+      "topic": "报销-差旅补贴"
+    },
+    {
+      "question": "因公借款有什么额度限制？",
+      "expected_category": "财务",
+      "expected_keywords": ["借款", "1个月工资", "试用期"],
+      "topic": "报销-借款"
+    },
+    {
+      "question": "忘记企业邮箱密码了怎么重置？",
+      "expected_category": "IT",
+      "expected_keywords": ["密码", "重置", "自助", "服务台"],
+      "topic": "IT-密码"
+    },
+    {
+      "question": "公司密码有什么复杂度要求？多久要改一次？",
+      "expected_category": "IT",
+      "expected_keywords": ["密码", "12位", "有效期", "字符"],
+      "topic": "IT-密码策略"
+    },
+    {
+      "question": "新员工入职后邮箱和OA账号怎么开通？",
+      "expected_category": "IT",
+      "expected_keywords": ["账号", "开通", "IT", "初始密码"],
+      "topic": "IT-账号开通"
+    },
+    {
+      "question": "我的电脑连不上网了应该怎么排查？",
+      "expected_category": "IT",
+      "expected_keywords": ["网络", "排查", "网线", "DNS"],
+      "topic": "IT-网络故障"
+    },
+    {
+      "question": "VPN连不上是什么原因？",
+      "expected_category": "IT",
+      "expected_keywords": ["VPN", "客户端", "证书", "账号"],
+      "topic": "IT-VPN"
+    },
+    {
+      "question": "邮箱发不出带附件的邮件是怎么回事？",
+      "expected_category": "IT",
+      "expected_keywords": ["邮箱", "附件", "容量", "退信"],
+      "topic": "IT-邮箱"
+    },
+    {
+      "question": "收到一封可疑的钓鱼邮件该怎么处理？",
+      "expected_category": "IT",
+      "expected_keywords": ["钓鱼", "不要点击", "IT", "转发"],
+      "topic": "IT-信息安全"
+    },
+    {
+      "question": "我需要安装一个专业设计软件，走什么流程？",
+      "expected_category": "IT",
+      "expected_keywords": ["软件", "申请", "审批", "安装"],
+      "topic": "IT-软件安装"
+    },
+    {
+      "question": "IT工单提交后多久会有人响应？",
+      "expected_category": "IT",
+      "expected_keywords": ["工单", "优先级", "响应", "时限"],
+      "topic": "IT-SLA"
+    },
+    {
+      "question": "怎么预订会议室？需要提前多久？",
+      "expected_category": "行政",
+      "expected_keywords": ["会议室", "预订", "提前", "系统"],
+      "topic": "行政-会议室"
+    },
+    {
+      "question": "我订的会议室被别人占了怎么办？",
+      "expected_category": "行政",
+      "expected_keywords": ["会议室", "先申请先使用", "行政", "协调"],
+      "topic": "行政-会议室冲突"
+    },
+    {
+      "question": "临时不用会议室了要不要取消预订？",
+      "expected_category": "行政",
+      "expected_keywords": ["取消", "预订", "释放", "时段"],
+      "topic": "行政-会议室取消"
+    },
+    {
+      "question": "办公用品用完了怎么申领？",
+      "expected_category": "行政",
+      "expected_keywords": ["办公用品", "申领", "审批", "台账"],
+      "topic": "行政-办公用品"
+    },
+    {
+      "question": "工牌丢了怎么补办？需要交钱吗？",
+      "expected_category": "行政",
+      "expected_keywords": ["工牌", "挂失", "补办", "工本费"],
+      "topic": "行政-工牌"
+    },
+    {
+      "question": "有客户明天来公司参观，访客怎么登记？",
+      "expected_category": "行政",
+      "expected_keywords": ["访客", "邀约", "登记", "前台"],
+      "topic": "行政-访客"
+    },
+    {
+      "question": "公司收到的快递多久不取会被退回？",
+      "expected_category": "行政",
+      "expected_keywords": ["快递", "保管", "工作日", "通知"],
+      "topic": "行政-快递"
+    },
+    {
+      "question": "寄样品到国外需要什么审批手续？",
+      "expected_category": "行政",
+      "expected_keywords": ["寄件", "审批", "行政", "海外"],
+      "topic": "行政-寄件"
+    },
+    {
+      "question": "调岗后门禁权限怎么变更？",
+      "expected_category": "行政",
+      "expected_keywords": ["门禁", "权限", "变更", "部门"],
+      "topic": "行政-门禁"
+    },
+    {
+      "question": "食堂的用餐时间是几点到几点？",
+      "expected_category": "后勤",
+      "expected_keywords": ["食堂", "早餐", "中餐", "晚餐"],
+      "topic": "后勤-食堂"
+    },
+    {
+      "question": "食堂饭菜吃出问题了怎么投诉？",
+      "expected_category": "后勤",
+      "expected_keywords": ["投诉", "食品安全", "工单", "反馈"],
+      "topic": "后勤-食堂投诉"
+    },
+    {
+      "question": "加班餐有补贴标准吗？",
+      "expected_category": "后勤",
+      "expected_keywords": ["加班", "用餐", "元", "审批"],
+      "topic": "后勤-加班餐"
+    },
+    {
+      "question": "怎么申请员工宿舍？入住流程是什么？",
+      "expected_category": "后勤",
+      "expected_keywords": ["宿舍", "申请", "审批", "协议"],
+      "topic": "后勤-宿舍"
+    },
+    {
+      "question": "宿舍的水电费怎么分摊？",
+      "expected_category": "后勤",
+      "expected_keywords": ["水电", "额定", "超额", "分摊"],
+      "topic": "后勤-宿舍水电"
+    },
+    {
+      "question": "离职前宿舍退宿怎么办手续？",
+      "expected_category": "后勤",
+      "expected_keywords": ["退宿", "钥匙", "验房", "结清"],
+      "topic": "后勤-退宿"
+    },
+    {
+      "question": "办公室空调不制冷了找谁修？多久能修好？",
+      "expected_category": "后勤",
+      "expected_keywords": ["报修", "空调", "24小时", "工单"],
+      "topic": "后勤-维修"
+    },
+    {
+      "question": "卫生间水管漏水应该走什么报修流程？",
+      "expected_category": "后勤",
+      "expected_keywords": ["报修", "漏水", "给排水", "24小时"],
+      "topic": "后勤-水电报修"
+    },
+    {
+      "question": "办公室想做一次地毯清洗怎么申请？",
+      "expected_category": "后勤",
+      "expected_keywords": ["特殊清洁", "申请", "排期", "保洁"],
+      "topic": "后勤-保洁"
+    },
+    {
+      "question": "怎么申请公司停车位和车牌登记？",
+      "expected_category": "后勤",
+      "expected_keywords": ["停车", "车牌", "申请", "登记"],
+      "topic": "后勤-停车"
+    },
+    {
+      "question": "车子晚上能停在公司过夜吗？",
+      "expected_category": "后勤",
+      "expected_keywords": ["过夜", "24:00", "告知", "物业"],
+      "topic": "后勤-停车过夜"
+    },
+    {
+      "question": "空调温度设置有什么节能要求？",
+      "expected_category": "后勤",
+      "expected_keywords": ["空调", "26", "20", "节能"],
+      "topic": "后勤-节能"
+    },
+    {
+      "question": "电脑坏了应该找后勤维修还是找IT？",
+      "expected_category": "IT",
+      "expected_keywords": ["IT", "后勤", "设备", "范围"],
+      "topic": "跨部门-职责边界"
+    },
+    {
+      "question": "今天天气怎么样？适合出去团建吗？",
+      "expected_category": "其他",
+      "expected_keywords": ["暂未找到明确制度", "转人工"],
+      "topic": "无法判断-闲聊"
+    },
+    {
+      "question": "帮我写一首关于秋天的诗。",
+      "expected_category": "其他",
+      "expected_keywords": ["暂未找到明确制度", "转人工"],
+      "topic": "无法判断-创作"
+    },
+    {
+      "question": "公司的股票什么时候分红？",
+      "expected_category": "其他",
+      "expected_keywords": ["暂未找到明确制度", "转人工"],
+      "topic": "无法判断-知识库外"
+    },
+    {
+      "question": "你能帮我订一张明天去北京的高铁票吗？",
+      "expected_category": "其他",
+      "expected_keywords": ["暂未找到明确制度", "转人工"],
+      "topic": "无法判断-操作请求"
+    },
+    {
+      "question": "隔壁部门的同事跟我发生了争执，我该怎么处理？",
+      "expected_category": "其他",
+      "expected_keywords": ["暂未找到明确制度", "转人工"],
+      "topic": "无法判断-主观咨询"
+    },
+    {
+      "question": "公司食堂的供应商是哪一家？联系方式是什么？",
+      "expected_category": "其他",
+      "expected_keywords": ["暂未找到明确制度", "转人工"],
+      "topic": "无法判断-索取真实联系方式"
+    }
+  ]
+}

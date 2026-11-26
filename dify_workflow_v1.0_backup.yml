@@ -1,0 +1,875 @@
+app:
+  description: 基于企业制度知识库的员工问答与工单分类助手（13 节点 Chatflow）
+  icon: 🤖
+  icon_background: '#E4FBCC'
+  icon_type: emoji
+  mode: advanced-chat
+  name: 企业智能问答与工单分类助手
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.2.22@9cea96ffc7977f536c02999c80ff1283b1819aab9b6fa2fdf789d0c6c7d03715
+    version: null
+kind: app
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload: {}
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: code
+      id: start-source-code_question-target
+      source: start
+      sourceHandle: source
+      target: code_question
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: parameter-extractor
+      id: code_question-source-pe_category-target
+      source: code_question
+      sourceHandle: source
+      target: pe_category
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: knowledge-retrieval
+      id: code_question-source-kr-target
+      source: code_question
+      sourceHandle: source
+      target: kr
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: code
+      id: kr-source-code_context-target
+      source: kr
+      sourceHandle: source
+      target: code_context
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: llm
+      id: pe_category-source-llm_answer-target
+      source: pe_category
+      sourceHandle: source
+      target: llm_answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: code_context-source-llm_answer-target
+      source: code_context
+      sourceHandle: source
+      target: llm_answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: llm_answer-source-code_parse-target
+      source: llm_answer
+      sourceHandle: source
+      target: code_parse
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: code_parse-source-ifelse_human-target
+      source: code_parse
+      sourceHandle: source
+      target: ifelse_human
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: ifelse_human-true-llm_fallback-target
+      source: ifelse_human
+      sourceHandle: 'true'
+      target: llm_fallback
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: llm_fallback-source-code_fb_merge-target
+      source: llm_fallback
+      sourceHandle: source
+      target: code_fb_merge
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: code_fb_merge-source-answer_fb-target
+      source: code_fb_merge
+      sourceHandle: source
+      target: answer_fb
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: ifelse_human-false-code_ok_merge-target
+      source: ifelse_human
+      sourceHandle: 'false'
+      target: code_ok_merge
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: code_ok_merge-source-answer_ok-target
+      source: code_ok_merge
+      sourceHandle: source
+      target: answer_ok
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 72
+      id: start
+      position:
+        x: 80
+        y: 300
+      positionAbsolute:
+        x: 80
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        code: "def main(query: str) -> dict:\n    return {\"question\": (query or\
+          \ \"\").strip()}"
+        code_language: python3
+        outputs:
+          question:
+            children: null
+            type: string
+        selected: false
+        title: 变量归一
+        type: code
+        variables:
+        - value_selector:
+          - sys
+          - query
+          variable: query
+      height: 51
+      id: code_question
+      position:
+        x: 380
+        y: 300
+      positionAbsolute:
+        x: 380
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        instruction: '你是企业内部的智能工单分类模块。你的唯一任务是从员工问题中抽取 category、confidence、reason 三个参数。
+
+
+          【归类边界规则，必须严格遵守】
+
+          1. 问题同时涉及多个类别时，以员工最终想解决的核心诉求归类。例：「出差回来报销打车费」归财务，不归行政。
+
+          2. 账号开通、密码重置、网络故障、邮箱问题、软件安装一律归 IT，即使问题出现在新员工入职场景中。
+
+          3. 入职材料、入职当天流程、试用期转正、离职交接手续归人事。
+
+          4. 工牌门禁、会议室预订、办公用品申领、快递收发归行政；宿舍、食堂、停车场、维修报修、保洁、水电归后勤。
+
+          5. 电脑、打印机、网络设备、投影仪等 IT 资产故障归 IT；门窗、家具、空调、电梯、照明、水电线路归后勤。
+
+          6. 只要问题涉及索取真实电话、真实邮箱、真实网址、真实企业名称或真实制度原文，一律归其他。
+
+          7. 闲聊、写诗、写作、翻译、编程等与企业制度无关的请求，一律归其他。
+
+          8. 无法判断归属时，归其他。
+
+
+          【取值约束】
+
+          category 必须严格等于 人事 / 行政 / 财务 / IT / 后勤 / 其他 中的一个，禁止输出任何其他标签、禁止输出英文标签、禁止输出解释性长文。
+
+
+          【示例】
+
+          输入：年假怎么申请？            → category=人事, confidence=0.98, reason=询问年假申请流程，属人事休假管理
+
+          输入：出差住宿超标能报销吗？     → category=财务, confidence=0.96, reason=询问差旅住宿报销标准，属财务报销
+
+          输入：电脑连不上网怎么办？       → category=IT,   confidence=0.97, reason=网络故障排查，属 IT
+          服务
+
+          输入：怎么预订会议室？           → category=行政, confidence=0.97, reason=会议室预订属行政服务
+
+          输入：宿舍水电费怎么分摊？       → category=后勤, confidence=0.96, reason=宿舍费用属后勤服务
+
+          输入：帮我写一首关于秋天的诗     → category=其他, confidence=0.99, reason=创作类请求，与企业制度无关
+
+          输入：公司食堂供应商电话是多少？ → category=其他, confidence=0.93, reason=索取真实联系方式，知识库不提供
+
+          输入：新入职电脑领用和工位怎么安排？ → category=人事, confidence=0.88, reason=核心诉求是入职流程，属人事
+
+          输入：办公室空调不制冷找谁修？   → category=后勤, confidence=0.95, reason=空调设备维修属后勤报修
+
+
+          【待分类问题】
+
+          {{#code_question.question#}}'
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            enable_thinking: false
+            temperature: 0.2
+          mode: chat
+          name: qwen3.8-max
+          provider: langgenius/tongyi/tongyi
+        parameters:
+        - description: 员工咨询所属类别，只能取以下 6 个值之一：人事、行政、财务、IT、后勤、其他。人事=请假休假/考勤/销假旷工/入职材料/入职流程/试用期转正/离职交接/离职证明/薪酬社保福利/员工手册与行为规范；行政=会议室预订/办公用品申领/工牌门禁办理与权限变更/访客登记/快递收发与寄件审批/文印用印/公务接待用车；财务=费用报销/发票合规/报销时限与打款周期/审批权限分级/差旅费标准/业务招待费/借款还款；IT=账号与密码重置/系统账号与权限开通/电脑无法上网/WiFi网线IP
+            DNS VPN代理故障/企业邮箱收发与配置/钓鱼邮件与信息安全/软件安装与正版授权/IT工单与响应时效/办公终端与网络设备故障；后勤=食堂就餐与餐补/食品安全投诉/员工宿舍申请入住退宿与水电分摊/保洁与特殊清洁申请/水电空调电梯维修报修/停车场车位申请与违规处理/节能管理；其他=闲聊、创作类请求、知识库中不存在的内容、订票等外部操作请求、主观人际咨询、索取真实电话邮箱网址或真实企业制度、无法判断归属的问题
+          name: category
+          required: true
+          type: string
+        - description: 分类置信度，0 到 1 之间的小数
+          name: confidence
+          required: false
+          type: number
+        - description: 判断理由，不超过 40 个字
+          name: reason
+          required: false
+          type: string
+        query:
+        - code_question
+        - question
+        reasoning_mode: prompt
+        selected: false
+        title: 工单分类
+        type: parameter-extractor
+        vision:
+          enabled: false
+      height: 87
+      id: pe_category
+      position:
+        x: 700
+        y: 140
+      positionAbsolute:
+        x: 700
+        y: 140
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        dataset_ids:
+        - hLLbPaQzJ17huaS1D4DwgqK6HHWkZnU+0+BWXSXD8U6HIMU3Eg6Wjb1TLXDjMUvA
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: qwen3-rerank
+            provider: langgenius/tongyi/tongyi
+          score_threshold: 0.5
+          score_threshold_enabled: true
+          top_k: 5
+        query_variable_selector:
+        - code_question
+        - question
+        retrieval_mode: multiple
+        selected: false
+        title: 知识库检索
+        type: knowledge-retrieval
+      height: 89
+      id: kr
+      position:
+        x: 700
+        y: 470
+      positionAbsolute:
+        x: 700
+        y: 470
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        code: "def main(result: list) -> dict:\n    FALLBACK_HINT = \"（本次检索未召回任何知识库内容）\"\
+          \n    chunks = result if isinstance(result, list) else []\n    parts = []\n\
+          \    top_score = 0.0\n    for i, seg in enumerate(chunks, 1):\n        if\
+          \ not isinstance(seg, dict):\n            continue\n        content = str(seg.get(\"\
+          content\") or \"\").strip()\n        if not content:\n            continue\n\
+          \        meta = seg.get(\"metadata\") or {}\n        doc_name = (meta.get(\"\
+          document_name\") or meta.get(\"dataset_name\") or seg.get(\"title\") or\
+          \ \"unknown\")\n        title = str(seg.get(\"title\") or \"\").strip()\n\
+          \        try:\n            score = float(seg.get(\"score\") or 0.0)\n  \
+          \      except Exception:\n            score = 0.0\n        top_score = max(top_score,\
+          \ score)\n        head = \"【片段\" + str(i) + \"】来源文档: \" + str(doc_name)\n\
+          \        if title:\n            head += \" | 章节: \" + title\n        head\
+          \ += \" | 相关度: %.3f\" % score\n        parts.append(head + \"\\n\" + content)\n\
+          \    knowledge_context = \"\\n\\n\".join(parts) if parts else FALLBACK_HINT\n\
+          \    return {\n        \"knowledge_context\": knowledge_context,\n     \
+          \   \"retrieval_hit\": 1 if parts else 0,\n        \"top_score\": round(top_score,\
+          \ 4),\n    }"
+        code_language: python3
+        outputs:
+          knowledge_context:
+            children: null
+            type: string
+          retrieval_hit:
+            children: null
+            type: number
+          top_score:
+            children: null
+            type: number
+        selected: false
+        title: 上下文拼装
+        type: code
+        variables:
+        - value_selector:
+          - kr
+          - result
+          variable: result
+      height: 51
+      id: code_context
+      position:
+        x: 1020
+        y: 470
+      positionAbsolute:
+        x: 1020
+        y: 470
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - code_context
+          - knowledge_context
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            enable_thinking: false
+            temperature: 0.2
+            top_p: 0.9
+          mode: chat
+          name: qwen3.8-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: sys-n6
+          role: system
+          text: "你是企业内部「智能问答与工单分类助手」的回答生成模块。你必须严格依据检索到的知识库内容回答员工问题。\n\n【最高优先级规则：只依据知识库】\n\
+            1. 只能使用下方【知识库内容】中的信息作答。\n2. 严禁编造或推测任何制度条款、天数、金额、比例、流程步骤、审批层级、办理时限。\n3.\
+            \ 严禁编造或输出任何真实电话号码、手机号、邮箱地址、外部网址、真实企业名称、真实人名。需要指引办理渠道时，只写内部系统通用名称（如 OA\
+            \ 系统、IT 服务台工单系统、后勤服务平台、行政前台）。\n4. 知识库中标注为「示例数值」的数字，回答时必须保留「示例」表述（例如写作「示例为\
+            \ 5 天」），不得表述为本企业确定的正式标准。\n5. 若【知识库内容】为空、显示未召回、内容与问题不相关、或不足以支撑一个明确答案，必须且只能输出这句固定话术，不得增删任何字符：\n\
+            暂未找到明确制度，建议转人工处理。\n6. 不得因为「常识上应该如此」而补全制度细节。不确定就转人工。\n\n【回答风格】\n- 简洁、条理清晰，控制在\
+            \ 200 字以内。\n- 先给结论，再给关键条件与步骤，最后给注意事项。\n- 涉及流程时用 1. 2. 3. 编号列出。\n- 不使用夸张或营销化语言，不添加表情符号，不添加\
+            \ Markdown 标题。\n\n【输出格式：只输出一个 JSON 对象，禁止输出 Markdown 代码块标记，禁止输出任何解释性文字】\n\
+            {\n  \"question\": \"员工原始问题原文，逐字回填\",\n  \"category\": \"上游传入的工单类别，逐字回填\"\
+            ,\n  \"answer\": \"依据知识库生成的回答正文；无可靠依据时填第 5 条的固定话术\",\n  \"suggestion\"\
+            : \"给员工的下一步处理建议，指明办理渠道或需准备材料的概括性描述，不含任何真实联系方式\",\n  \"source\": \"引用来源，格式为\
+            \ 文档名#章节名，多个来源用 ; 分隔；无来源时填 none\",\n  \"need_human\": false\n}\n\n【need_human\
+            \ 取值规则】\n- 当 answer 为固定话术「暂未找到明确制度，建议转人工处理。」时，need_human 必须为 true。\n-\
+            \ 当问题涉及申诉、纠纷、违规举报、紧急安全事件、个性化薪酬核算、涉密事项时，need_human 必须为 true，即使知识库有相关内容。\n\
+            - 其他情况 need_human 为 false。\n\n【source 填写规则】\n- 只能填写【知识库内容】中真实出现的来源文档名与章节标题，例如\
+            \ leave_policy.md#3.请假审批流程。\n- 【知识库内容】未提供任何来源信息时填 none，严禁臆造来源。\n\n【知识库内容】\n\
+            {{#context#}}\n\n【员工问题】\n{{#code_question.question#}}\n\n【上游分类结果】\n{{#pe_category.category#}}"
+        - id: usr-n6
+          role: user
+          text: 请依据上述【知识库内容】回答【员工问题】，只输出一个 JSON 对象。
+        selected: false
+        title: 回答生成
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: llm_answer
+      position:
+        x: 1340
+        y: 300
+      positionAbsolute:
+        x: 1340
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        code: "import json\n\nQUOTE = chr(34)\nBACKSLASH = chr(92)\nFENCE = chr(96)\
+          \ * 3\n\n\ndef strip_think(s):\n    s = s or \"\"\n    i = s.find(\"<think>\"\
+          )\n    while i >= 0:\n        j = s.find(\"</think>\", i)\n        if j\
+          \ < 0:\n            s = s[:i]\n            break\n        s = s[:i] + s[j\
+          \ + 8:]\n        i = s.find(\"<think>\")\n    return s.strip()\n\n\ndef\
+          \ json_blocks(s):\n    blocks = []\n    depth = 0\n    start = -1\n    in_str\
+          \ = False\n    esc = False\n    for i in range(len(s)):\n        ch = s[i]\n\
+          \        if in_str:\n            if esc:\n                esc = False\n\
+          \            elif ch == BACKSLASH:\n                esc = True\n       \
+          \     elif ch == QUOTE:\n                in_str = False\n            continue\n\
+          \        if ch == QUOTE:\n            in_str = True\n        elif ch ==\
+          \ \"{\":\n            if depth == 0:\n                start = i\n      \
+          \      depth += 1\n        elif ch == \"}\":\n            if depth > 0:\n\
+          \                depth -= 1\n                if depth == 0 and start >=\
+          \ 0:\n                    blocks.append(s[start:i + 1])\n              \
+          \      start = -1\n    return blocks\n\n\ndef strip_fence(s):\n    body\
+          \ = (s or \"\").strip()\n    if body.startswith(FENCE):\n        nl = body.find(chr(10))\n\
+          \        if nl >= 0:\n            body = body[nl + 1:]\n        body = body.rstrip()\n\
+          \        if body.endswith(FENCE):\n            body = body[:-3]\n    return\
+          \ body.strip()\n\nFALLBACK = \"暂未找到明确制度，建议转人工处理。\"\nDEFAULT_SUGGESTION =\
+          \ (\"该问题暂未被知识库覆盖，建议提交人工工单：说明问题背景、发生时间、\"\n                      \"涉及部门与期望处理时限，由对应归口部门跟进答复。\"\
+          )\n\n\ndef main(text: str, question: str, category: str, retrieval_hit:\
+          \ int) -> dict:\n    raw_all = (text or \"\").strip()\n    raw = strip_think(raw_all)\
+          \ or raw_all\n    parsed = {}\n    for cand in [raw] + json_blocks(raw):\n\
+          \        cand = (cand or \"\").strip()\n        if not cand:\n         \
+          \   continue\n        try:\n            obj = json.loads(cand)\n       \
+          \ except Exception:\n            continue\n        if isinstance(obj, dict)\
+          \ and (\"answer\" in obj or \"suggestion\" in obj):\n            parsed\
+          \ = obj\n            break\n    if not parsed:\n        for cand in json_blocks(raw):\n\
+          \            try:\n                obj = json.loads(cand)\n            except\
+          \ Exception:\n                continue\n            if isinstance(obj, dict):\n\
+          \                parsed = obj\n                break\n\n    answer = str(parsed.get(\"\
+          answer\") or \"\").strip()\n    if not answer:\n        body = strip_fence(raw)\n\
+          \        answer = body if body else FALLBACK\n\n    suggestion = str(parsed.get(\"\
+          suggestion\") or \"\").strip()\n    source = str(parsed.get(\"source\")\
+          \ or \"none\").strip() or \"none\"\n\n    nh = parsed.get(\"need_human\"\
+          )\n    if isinstance(nh, str):\n        nh = nh.strip().lower() in (\"true\"\
+          , \"1\", \"yes\", \"是\")\n    need_human = bool(nh)\n\n    is_fallback =\
+          \ (FALLBACK in answer) or (int(retrieval_hit or 0) == 0) or need_human\n\
+          \n    if is_fallback:\n        answer = FALLBACK\n        source = \"none\"\
+          \n        need_human = True\n        if not suggestion:\n            suggestion\
+          \ = DEFAULT_SUGGESTION\n\n    return {\n        \"answer\": answer,\n  \
+          \      \"suggestion\": suggestion,\n        \"source\": source,\n      \
+          \  \"need_human\": 1 if need_human else 0,\n        \"is_fallback\": 1 if\
+          \ is_fallback else 0,\n    }"
+        code_language: python3
+        outputs:
+          answer:
+            children: null
+            type: string
+          is_fallback:
+            children: null
+            type: number
+          need_human:
+            children: null
+            type: number
+          source:
+            children: null
+            type: string
+          suggestion:
+            children: null
+            type: string
+        selected: false
+        title: 回答解析
+        type: code
+        variables:
+        - value_selector:
+          - llm_answer
+          - text
+          variable: text
+        - value_selector:
+          - code_question
+          - question
+          variable: question
+        - value_selector:
+          - pe_category
+          - category
+          variable: category
+        - value_selector:
+          - code_context
+          - retrieval_hit
+          variable: retrieval_hit
+      height: 51
+      id: code_parse
+      position:
+        x: 1660
+        y: 300
+      positionAbsolute:
+        x: 1660
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: '='
+            id: cd1
+            value: '1'
+            var_type: number
+            variable_selector:
+            - code_parse
+            - is_fallback
+          - comparison_operator: '='
+            id: cd2
+            value: '1'
+            var_type: number
+            variable_selector:
+            - code_parse
+            - need_human
+          - comparison_operator: '='
+            id: cd3
+            value: '0'
+            var_type: number
+            variable_selector:
+            - code_context
+            - retrieval_hit
+          - comparison_operator: '='
+            id: cd4
+            value: '0'
+            var_type: number
+            variable_selector:
+            - pe_category
+            - __is_success
+          logical_operator: or
+        selected: false
+        title: 是否转人工
+        type: if-else
+      height: 201
+      id: ifelse_human
+      position:
+        x: 1980
+        y: 300
+      positionAbsolute:
+        x: 1980
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            enable_thinking: false
+            temperature: 0.2
+            top_p: 0.9
+          mode: chat
+          name: qwen3.8-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: sys-n9
+          role: system
+          text: "你是企业内部「智能问答与工单分类助手」的人工兜底模块。当前员工的问题在知识库中没有找到可靠依据，需要转人工处理。\n\n【绝对禁止事项】\n\
+            1. 禁止编造任何制度条款、天数、金额、比例、流程步骤、审批层级、办理时限。\n2. 禁止输出任何真实电话号码、手机号、邮箱地址、外部网址、真实企业名称、真实人名。\n\
+            3. 禁止假装知道答案，禁止给出「一般来说」「通常情况下」式的推测性制度描述。\n4. 禁止修改或替换固定兜底话术的任何字符。\n\n【你的任务】\n\
+            只生成一段给员工的处理建议（suggestion），要求：\n- 不超过 80 字。\n- 语气克制、专业、不推诿。\n- 告诉员工接下来该怎么做：通过哪个内部渠道提交人工工单、需要准备哪些信息。\n\
+            - 只写内部系统通用名称（如 OA 系统、IT 服务台工单系统、后勤服务平台、行政前台），不写任何具体联系方式。\n- 结合员工问题的实际内容和所属类别，让建议有针对性，不要千篇一律。\n\
+            \n【输出格式：只输出一个 JSON 对象，禁止输出 Markdown 代码块标记，禁止输出任何解释性文字】\n{\n  \"suggestion\"\
+            : \"针对该问题的转人工处理建议\"\n}\n\n【员工问题】\n{{#code_question.question#}}\n\n【工单类别】\n\
+            {{#pe_category.category#}}"
+        - id: usr-n9
+          role: user
+          text: 请生成转人工处理建议，只输出一个 JSON 对象。
+        selected: false
+        title: 人工兜底提示
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: llm_fallback
+      position:
+        x: 2300
+        y: 140
+      positionAbsolute:
+        x: 2300
+        y: 140
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        code: "import json\n\nQUOTE = chr(34)\nBACKSLASH = chr(92)\nFENCE = chr(96)\
+          \ * 3\n\n\ndef strip_think(s):\n    s = s or \"\"\n    i = s.find(\"<think>\"\
+          )\n    while i >= 0:\n        j = s.find(\"</think>\", i)\n        if j\
+          \ < 0:\n            s = s[:i]\n            break\n        s = s[:i] + s[j\
+          \ + 8:]\n        i = s.find(\"<think>\")\n    return s.strip()\n\n\ndef\
+          \ json_blocks(s):\n    blocks = []\n    depth = 0\n    start = -1\n    in_str\
+          \ = False\n    esc = False\n    for i in range(len(s)):\n        ch = s[i]\n\
+          \        if in_str:\n            if esc:\n                esc = False\n\
+          \            elif ch == BACKSLASH:\n                esc = True\n       \
+          \     elif ch == QUOTE:\n                in_str = False\n            continue\n\
+          \        if ch == QUOTE:\n            in_str = True\n        elif ch ==\
+          \ \"{\":\n            if depth == 0:\n                start = i\n      \
+          \      depth += 1\n        elif ch == \"}\":\n            if depth > 0:\n\
+          \                depth -= 1\n                if depth == 0 and start >=\
+          \ 0:\n                    blocks.append(s[start:i + 1])\n              \
+          \      start = -1\n    return blocks\n\n\ndef strip_fence(s):\n    body\
+          \ = (s or \"\").strip()\n    if body.startswith(FENCE):\n        nl = body.find(chr(10))\n\
+          \        if nl >= 0:\n            body = body[nl + 1:]\n        body = body.rstrip()\n\
+          \        if body.endswith(FENCE):\n            body = body[:-3]\n    return\
+          \ body.strip()\n\nFALLBACK = \"暂未找到明确制度，建议转人工处理。\"\nDEFAULT_SUGGESTION =\
+          \ (\"该问题暂未被知识库覆盖，建议提交人工工单：说明问题背景、发生时间、\"\n                      \"涉及部门与期望处理时限，由对应归口部门跟进答复。\"\
+          )\nVALID_CATEGORIES = (\"人事\", \"行政\", \"财务\", \"IT\", \"后勤\", \"其他\")\n\
+          \n\ndef main(question: str, category: str, fallback_text: str, answer: str)\
+          \ -> dict:\n    raw = strip_think((fallback_text or \"\").strip())\n   \
+          \ suggestion = \"\"\n    for cand in [raw] + json_blocks(raw):\n       \
+          \ cand = (cand or \"\").strip()\n        if not cand:\n            continue\n\
+          \        try:\n            obj = json.loads(cand)\n        except Exception:\n\
+          \            continue\n        if isinstance(obj, dict):\n            suggestion\
+          \ = str(obj.get(\"suggestion\") or \"\").strip()\n            if suggestion:\n\
+          \                break\n    if not suggestion:\n        body = strip_fence(raw)\n\
+          \        suggestion = body if body and len(body) <= 200 else DEFAULT_SUGGESTION\n\
+          \n    cat = (category or \"\").strip()\n    if cat not in VALID_CATEGORIES:\n\
+          \        cat = \"其他\"\n\n    payload = {\n        \"question\": (question\
+          \ or \"\").strip(),\n        \"category\": cat,\n        \"answer\": FALLBACK,\n\
+          \        \"suggestion\": suggestion,\n        \"source\": \"none\",\n  \
+          \      \"need_human\": True,\n    }\n    return {\n        \"final_answer\"\
+          : FALLBACK,\n        \"fallback_answer\": suggestion,\n        \"final_json\"\
+          : json.dumps(payload, ensure_ascii=False),\n    }"
+        code_language: python3
+        outputs:
+          fallback_answer:
+            children: null
+            type: string
+          final_answer:
+            children: null
+            type: string
+          final_json:
+            children: null
+            type: string
+        selected: false
+        title: 兜底结果合并
+        type: code
+        variables:
+        - value_selector:
+          - code_question
+          - question
+          variable: question
+        - value_selector:
+          - pe_category
+          - category
+          variable: category
+        - value_selector:
+          - llm_fallback
+          - text
+          variable: fallback_text
+        - value_selector:
+          - code_parse
+          - answer
+          variable: answer
+      height: 51
+      id: code_fb_merge
+      position:
+        x: 2620
+        y: 140
+      positionAbsolute:
+        x: 2620
+        y: 140
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        answer: '{{#code_fb_merge.final_json#}}'
+        selected: false
+        title: 直接回复（兜底）
+        type: answer
+        variables: []
+      height: 101
+      id: answer_fb
+      position:
+        x: 2940
+        y: 140
+      positionAbsolute:
+        x: 2940
+        y: 140
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        code: "import json\n\nFALLBACK = \"暂未找到明确制度，建议转人工处理。\"\nVALID_CATEGORIES =\
+          \ (\"人事\", \"行政\", \"财务\", \"IT\", \"后勤\", \"其他\")\n\n\ndef main(question:\
+          \ str, category: str, answer: str, suggestion: str, source: str) -> dict:\n\
+          \    cat = (category or \"\").strip()\n    if cat not in VALID_CATEGORIES:\n\
+          \        cat = \"其他\"\n\n    ans = (answer or \"\").strip()\n    need_human\
+          \ = FALLBACK in ans\n\n    payload = {\n        \"question\": (question\
+          \ or \"\").strip(),\n        \"category\": cat,\n        \"answer\": ans\
+          \ or FALLBACK,\n        \"suggestion\": (suggestion or \"\").strip(),\n\
+          \        \"source\": (source or \"none\").strip() or \"none\",\n       \
+          \ \"need_human\": bool(need_human),\n    }\n    return {\n        \"final_answer\"\
+          : payload[\"answer\"],\n        \"final_json\": json.dumps(payload, ensure_ascii=False),\n\
+          \    }"
+        code_language: python3
+        outputs:
+          final_answer:
+            children: null
+            type: string
+          final_json:
+            children: null
+            type: string
+        selected: false
+        title: 正常结果合并
+        type: code
+        variables:
+        - value_selector:
+          - code_question
+          - question
+          variable: question
+        - value_selector:
+          - pe_category
+          - category
+          variable: category
+        - value_selector:
+          - code_parse
+          - answer
+          variable: answer
+        - value_selector:
+          - code_parse
+          - suggestion
+          variable: suggestion
+        - value_selector:
+          - code_parse
+          - source
+          variable: source
+      height: 51
+      id: code_ok_merge
+      position:
+        x: 2300
+        y: 470
+      positionAbsolute:
+        x: 2300
+        y: 470
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        answer: '{{#code_ok_merge.final_json#}}'
+        selected: false
+        title: 直接回复（正常）
+        type: answer
+        variables: []
+      height: 101
+      id: answer_ok
+      position:
+        x: 2620
+        y: 470
+      positionAbsolute:
+        x: 2620
+        y: 470
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.8
+  rag_pipeline_variables: []

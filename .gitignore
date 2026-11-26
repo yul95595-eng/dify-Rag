@@ -1,0 +1,42 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# ===== 虚拟环境 =====
+venv/
+.venv/
+env/
+
+# ===== IDE =====
+.idea/
+.vscode/
+*.iml
+
+# ===== 密钥与环境（绝不提交）=====
+.env
+.env.*
+!.env.example
+
+# ===== 运行产物 =====
+eval_output/
+*.log
+logs/
+
+# ===== 系统 =====
+.DS_Store
+Thumbs.db
+
+# ===== 个人面试/讲解材料（不属于项目文档，不入公开仓库）=====
+/ServiceOps-01-项目讲解稿.md
+/ServiceOps-03-项目逐字稿要求.md
+/ServiceOps-面试拷打.md
+/project_intro_defense.html
+/project_intro_defense_lite.html
+/企业智能问答与工单分类助手 · 3 分钟精简版答辩稿.pdf
+.trae-html-share-packages/
+/_checkpoint.md
+/research_summary.md
+/dify_debug_and_publish.md
+/dify_workflow_build.md
+/dify_knowledge_base_setup.md
